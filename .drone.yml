@@ -1,0 +1,48 @@
+kind: pipeline
+name: arm
+
+platform:
+  os: linux
+  arch: arm
+
+steps:
+- name: uname
+  image: alpine
+  commands:
+  - uname -a
+
+- name: build
+  image: alpine
+  commands:
+  - apk update
+  - apk add --no-cache build-base git bash cmake boost-dev
+  - cmake --version
+  - mkdir build && cd build
+  - cmake ..
+  - cmake --build . --parallel
+  - ctest . --output-on-failure
+
+---
+kind: pipeline
+name: arm64
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+- name: uname
+  image: alpine
+  commands:
+  - uname -a
+
+- name: build
+  image: alpine
+  commands:
+  - apk update
+  - apk add --no-cache build-base git bash cmake boost-dev
+  - cmake --version
+  - mkdir build && cd build
+  - cmake ..
+  - cmake --build . --parallel
+  - ctest . --output-on-failure
