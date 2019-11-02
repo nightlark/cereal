@@ -8,6 +8,11 @@ if(CMAKE_VERSION VERSION_LESS 2.8)
   set(SKIP_PORTABILITY_TEST ON)
 endif()
 
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm|mips")
+  # ARM and MIPS compilers don't support -m32 and -m64 compiler options.
+  set(SKIP_PORTABILITY_TEST ON)
+endif()
+
 if(NOT SKIP_PORTABILITY_TEST)
   # Build the portability test only if we are on a 64-bit machine (void* is 8 bytes)
   if((${CMAKE_SIZEOF_VOID_P} EQUAL 8))
